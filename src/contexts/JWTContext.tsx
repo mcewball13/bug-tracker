@@ -12,7 +12,7 @@ enum Actions {
     Register = "REGISTER",
 }
 type JWTPayload {
-    
+    [Actions.Initial]: (state, action) => {}
 }
 
 
