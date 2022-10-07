@@ -5,13 +5,15 @@ import axios from "../utils/axios";
 // ----------------------------------------------------------------------
 // Types
 
-enum Types {
+enum Actions {
     Initial = "INITIALIZE",
     Login = "LOGIN",
     Logout = "LOGOUT",
     Register = "REGISTER",
 }
-
+type JWTPayload {
+    
+}
 
 
 
