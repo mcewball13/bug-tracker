@@ -11,9 +11,24 @@ enum Actions {
     Logout = "LOGOUT",
     Register = "REGISTER",
 }
-type JWTPayload {
-    [Actions.Initial]: (state, action) => {}
+
+type AuthUser = Record<string, any> | null;
+
+type JWTPayload = {
+    [Actions.Initial]: {
+        isAuthenticated: boolean;
+        user: AuthUser;
+    };
+    [Actions.Login]: {
+        user: AuthUser;
+    };
+    [Actions.Logout]: undefined;
+    [Actions.Register]: {
+        user: AuthUser;
+    };
 }
+
+
 
 
 
