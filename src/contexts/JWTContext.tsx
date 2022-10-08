@@ -1,6 +1,6 @@
 import { stringify } from "querystring";
 import { createContext, ReactNode, useEffect, useReducer } from "react";
-import { ActionMap, AuthUser } from "src/@types/auth";
+import { ActionMap, AuthUser, JWTContextType } from "src/@types/auth";
 import { isValidToken, setSession, decodeJWTUser } from "src/utils/jwt";
 
 import axios from "../utils/axios";
@@ -78,6 +78,8 @@ type AuthProviderProps = {
     children: ReactNode;
 };
 
+const AuthContext = createContext<JWTContextType | null>(null);
+
 function AuthProvider({ children }: AuthProviderProps) {
     const [state, dispatch] = useReducer(JWTReducer, initialState);
 
@@ -143,4 +145,51 @@ function AuthProvider({ children }: AuthProviderProps) {
             },
         });
     };
+
+    const register = async (
+        email: string,
+        password: string,
+        firstName: string,
+        lastName: string
+    ) => {
+        const response = await axios.post("/api/account/register", {
+            email,
+            password,
+            firstName,
+            lastName,
+        });
+        const { accessToken, user } = response.data;
+
+        localStorage.setItem("accessToken", accessToken);
+
+        dispatch({
+            type: Actions.Register,
+            payload: {
+                user,
+            },
+        });
+    };
+
+    const logout = async () => {
+        setSession(null);
+        dispatch({ type: Actions.Logout });
+    };
+
+    
+
+    return (
+        <AuthContext.Provider
+            value={{
+                ...state,
+                method: "jwt",
+                login,
+                logout,
+                register,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 }
+
+export { AuthProvider, AuthContext };
