@@ -16,6 +16,7 @@
     "@mui/styled-engine-sc": "^5.10.6",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^1.1.0",
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "jwt-decode": "^3.1.2",
     "next": "12.3.1",
@@ -28,6 +29,7 @@
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "18.8.3",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",

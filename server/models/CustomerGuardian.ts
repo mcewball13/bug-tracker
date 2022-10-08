@@ -1,11 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, NonAttribute, } from 'sequelize';
 import sequelize from '../config/connection';
 import bcrypt from 'bcrypt';
 
+
+
+
 class CustomerGuardian extends Model {
-  checkPassword(loginPassword) {
-    return bcrypt.compare(loginPassword, this.password);
-  }
+  
 }
 
 CustomerGuardian.init(
@@ -91,6 +92,11 @@ CustomerGuardian.init(
     },
   },
   {
+    instanceMethods: {
+      checkPassword(loginPassword:string) {
+        return bcrypt.compare(loginPassword, this.password);
+      }
+    },
     hooks: {
       beforeCreate: async (newCustomer) => {
         try {
