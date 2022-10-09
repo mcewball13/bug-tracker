@@ -5,24 +5,15 @@ import bcrypt from 'bcrypt';
 
 
 
-class CustomerGuardian extends Model<InferAttributes<CustomerGuardian>, InferCreationAttributes<CustomerGuardian>> {
-  declare id: CreationOptional<number>;
-  declare firstName: string;
-  declare lastName: string;
-  declare displayName: string;
-  declare email: string;
-  declare password: string;
-  declare resetPasswordToken: string;
-  declare resetPasswordExpires: number;
-  declare resetPasswordTokenUsed: boolean;
+class Employee extends Model {
 
-  checkPassword(loginPassword:string): Promise<boolean>{
+  checkPassword(loginPassword){
     return bcrypt.compare(loginPassword, this.password);
   }
 
 }
 
-CustomerGuardian.init(
+Employee.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -91,14 +82,9 @@ CustomerGuardian.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'customer_guardian',
+    modelName: 'employee',
   }
 );
 
-CustomerGuardian.addHook('beforeCreate', async (customerGuardian) => {  
-  customerGuardian.password = await bcrypt.hash(customerGuardian.password, 10);
-  return customerGuardian;
-});
 
-
-export default CustomerGuardian;
+export default Employee;
