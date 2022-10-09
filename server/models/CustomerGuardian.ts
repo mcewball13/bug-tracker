@@ -1,36 +1,20 @@
-import { Model, DataTypes, Optional, } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../config/connection';
 import bcrypt from 'bcrypt';
 
 
-interface UserAttributes {
-  id: number;
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  email: string;
-  password: string;
-  resetPasswordToken: string;
-  resetPasswordExpires: number;
-  resetPasswordTokenUsed: boolean;
-}
-
-export interface UserInputType extends Optional<UserAttributes, 'id'> {}
-export interface UserOutputType extends Required<UserAttributes> {}
 
 
-
-
-class CustomerGuardian extends Model<UserAttributes, UserInputType> implements UserAttributes {
-  public id!: number;
-  public firstName!: string;
-  public lastName!: string;
-  public displayName!: string;
-  public email!: string;
-  public password!: string;
-  public resetPasswordToken!: string;
-  public resetPasswordExpires!: number;
-  public resetPasswordTokenUsed!: boolean;
+class CustomerGuardian extends Model<InferAttributes<CustomerGuardian>, InferCreationAttributes<CustomerGuardian>> {
+  declare id: CreationOptional<number>;
+  declare firstName: string;
+  declare lastName: string;
+  declare displayName: string;
+  declare email: string;
+  declare password: string;
+  declare resetPasswordToken: string;
+  declare resetPasswordExpires: number;
+  declare resetPasswordTokenUsed: boolean;
 
   checkPassword(loginPassword:string): Promise<boolean>{
     return bcrypt.compare(loginPassword, this.password);
@@ -85,10 +69,10 @@ CustomerGuardian.init(
   },
   {
     hooks: {
-      beforeCreate: async (newCustomer: UserInputType) => {
+      beforeCreate: async ({password}, options) => {
         try {
-          newCustomer.password = await bcrypt.hash(newCustomer.password, 10);
-          return newCustomer;
+          password = await bcrypt.hash(password, 10);
+          return password;
         } catch (err) {
           throw new Error(err);
         }
@@ -110,6 +94,11 @@ CustomerGuardian.init(
     modelName: 'customer_guardian',
   }
 );
+
+CustomerGuardian.addHook('beforeCreate', async (customerGuardian) => {  
+  customerGuardian.password = await bcrypt.hash(customerGuardian.password, 10);
+  return customerGuardian;
+});
 
 
 export default CustomerGuardian;
