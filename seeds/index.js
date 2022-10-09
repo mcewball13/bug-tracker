@@ -1,38 +1,22 @@
-const seedGuardians = require("./guardianSeed");
-const seedCompanies = require("./companySeed");
-const seedLocations = require("./locationSeed");
-const seedMinors = require("./minorSeed");
-const seedGuardiansMinors = require("./guardianMinorSeed");
-const seedRoles = require("./rolesSeed");
-const seedEmployees = require("./employeeSeed");
-const seedMemberships = require("./membershipSeed");
-const seedCategories = require("./categorySeed");
-
-const sequelize = require("../server/config/connection");
+import seedEmployees from './employeeSeed.js';
+import seedCompanies from './companySeed.js';
+import seedBugs from './bugSeeds.js';
+import seedTickets from './ticketSeeds.js';
+import sequelize from '../server/config/connection.js';
 
 const seedAll = async () => {
-    await sequelize.sync({ force: true });
-    console.log("=============");
-    await seedMemberships();
-    console.log("=============");
-    await seedCompanies();
-    console.log("=============");
-    await seedLocations();
-    console.log("=============");
-    await seedCategories();
-    console.log("=============");
-    await seedMinors();
-    console.log("=============");
-    await seedGuardians();
-    console.log("=============");
-    await seedGuardiansMinors();
-    console.log("=============");
-    await seedRoles();
-    console.log("=============");
-    await seedEmployees();
-    console.log("=============");
+  await sequelize.sync({ force: true });
+  console.log('=============');
+  await seedCompanies();
+  console.log('=============');
+  await seedEmployees();
+  console.log('=============');
+  await seedBugs();
+  console.log('=============');
+  await seedTickets();
+  console.log('=============');
 
-    process.exit(0);
+  process.exit(0);
 };
 
 seedAll();

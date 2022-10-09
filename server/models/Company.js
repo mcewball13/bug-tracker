@@ -1,8 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
-const moment = require('moment');
-
-const currentDate = moment().format('MM/DD/YYYY');
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/connection.js';
 
 class Company extends Model {}
 
