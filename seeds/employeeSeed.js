@@ -1,19 +1,20 @@
-const { Employees } = require('../server/models');
+const { Employee } = require("../server/Employee");
+const { faker } = require("@faker-js/faker");
 
-const _DEFAULT_EMPLOYEE = {
-  username: 'demoAdmin',
-  email: 'demo@minimals.cc',
-  password: 'demo1234',
-  firstName: 'Demo',
-  lastName: 'Admin',
-};
+const _EMPLOYEES = [];
 
-const seedEmployees = () => {
-  try {
-    return Employees.create(_DEFAULT_EMPLOYEE);
-  } catch (error) {
-    console.log(error);
-  }
-};
+for (let i = 0; i < 8; i++) {
+    _EMPLOYEES.push({
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        displayName: faker.name.findName(),
+        password: faker.internet.password(),
+        email: faker.internet.email(),
+        company_id: Math.floor(Math.random() * 7 + 1),
+        locations_id: Math.floor(Math.random() * 4 + 1),
+    });
+}
 
-module.exports = seedEmployees;
+const seedGuardians = () => CustomerGuardian.bulkCreate(_EMPLOYEES);
+
+module.exports = seedGuardians;

@@ -12,10 +12,10 @@ import Comment from './Comment';
 // ===========================================================
 
 Company.hasMany(Employee, {
-    foreignKey: 'companyId',
+    foreignKey: 'company_id',
 });
 Employee.belongsTo(Company, {
-    foreignKey: 'companyId',
+    foreignKey: 'company_id',
 });
 
 
@@ -24,65 +24,67 @@ Employee.belongsTo(Company, {
 // ===========================================================
 
 Employee.hasMany(Bug, {
-    foreignKey: 'employeeId',
+    foreignKey: 'employee_id',
 });
 Bug.belongsTo(Employee, {
-    foreignKey: 'employeeId',
+    foreignKey: 'employee_id',
 });
 Employee.hasMany(Ticket, {
-    foreignKey: 'employeeId',
+    foreignKey: 'employee_id',
 });
 Ticket.belongsTo(Employee, {
-    foreignKey: 'employeeId',
+    foreignKey: 'employee_id',
 });
 Employee.hasMany(Comment, {
-    foreignKey: 'employeeId',
+    foreignKey: 'employee_id',
 });
 Comment.belongsTo(Employee, {
-    foreignKey: 'employeeId',
+    foreignKey: 'employee_id',
 });
 
 // ===========================================================
 // Create associations with the Tickets
 // ===========================================================
 Ticket.hasMany(Comment, {
-    foreignKey: 'ticketId',
+    foreignKey: 'ticket_id',
 });
 Comment.belongsTo(Ticket, {
-    foreignKey: 'ticketId',
+    foreignKey: 'ticket_id',
 });
 
 // Through Tables for many to many relationships
 Ticket.belongsToMany(Tag, {
     through: 'ticket_has_tag',
-    foreignKey: 'ticketId',
+    foreignKey: 'ticket_id',
     as: 'tags',
+    
 });
 Tag.belongsToMany(Ticket, {
     through: 'ticket_has_tag',
-    foreignKey: 'tagId',
+    foreignKey: 'tag_id',
     as: 'tickets',
+    
 });
 
 // ===========================================================
 // Create associations with the Bugs
 // ===========================================================
 Bug.hasMany(Comment, {  
-    foreignKey: 'bugId',
+    foreignKey: 'bug_id',
 });
 Comment.belongsTo(Bug, {
-    foreignKey: 'bugId',
+    foreignKey: 'bug_id',
 });
 
 // Through Tables for many to many relationships
 
 Bug.belongsToMany(Tag, {
     through: 'bug_has_tag',
-    foreignKey: 'bugId',
+    foreignKey: 'bug_id',
     as: 'tags',
 });
 Tag.belongsToMany(Bug, {
     through: 'bug_has_tag',
-    foreignKey: 'tagId',
+    foreignKey: 'tag_id',
     as: 'bugs',
 });
