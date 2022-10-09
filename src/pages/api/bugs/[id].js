@@ -1,11 +1,11 @@
-import { bugsRepo } from 'helpers';
+import Bug from '../../'
 
 export default handler;
 
 function handler(req, res) {
     switch (req.method) {
         case 'GET':
-            return getBugById();
+            return getBugById(req.params.id);
             ;
         case 'PUT':
             return updateBug();
@@ -18,8 +18,9 @@ function handler(req, res) {
 
     };
 
-    function getBugById() {
-        const bug = bugsRepo.getById(req.query.id);
+    function getBugById(id) {
+        const bugData= Bug.findByPk(id)
+        
         return res.status(200).json(bug);
     };
 

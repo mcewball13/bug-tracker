@@ -20,9 +20,7 @@ function getAll(){
     return bugs;
 }
 
-function getBugById(id) {
-    return bugs.find(id);
-}
+
 
 function create({ title, description, priority, status, dateCreated, dateUpdated, dateClosed, employee_id }){
     const bug = {title, description, priority, status, dateCreated, dateUpdated, dateClosed, employee_id };

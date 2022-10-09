@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "target": "ES6",
+    "lib": ["es6", "dom"],
     "strict": true,
     "noEmit": true,
     "allowJs": true,
@@ -20,17 +17,21 @@
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "server/models/Employee.js",
+    "server/models/index.js",
+    "server/models/Company.js",
+    "server/config/connection.js"
   ]
 }
