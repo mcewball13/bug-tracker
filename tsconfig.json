@@ -31,6 +31,7 @@
     "**/*.tsx",
     "server/models/Employee.js",
     "server/models/index.js",
-    "server/models/Company.js"
+    "server/models/Company.js",
+    "server/config/connection.js"
   ]
 }

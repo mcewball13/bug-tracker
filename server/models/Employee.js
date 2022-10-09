@@ -1,5 +1,5 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
-import sequelize from '../config/connection';
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/connection.js';
 import bcrypt from 'bcrypt';
 
 
