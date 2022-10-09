@@ -1,12 +1,41 @@
-import { Model, DataTypes, NonAttribute, } from 'sequelize';
+import { Model, DataTypes, Optional, } from 'sequelize';
 import sequelize from '../config/connection';
 import bcrypt from 'bcrypt';
 
 
+interface UserAttributes {
+  id: number;
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  email: string;
+  password: string;
+  resetPasswordToken: string;
+  resetPasswordExpires: number;
+  resetPasswordTokenUsed: boolean;
+}
+
+export interface UserInputType extends Optional<UserAttributes, 'id'> {}
+export interface UserOutputType extends Required<UserAttributes> {}
 
 
-class CustomerGuardian extends Model {
-  
+
+
+class CustomerGuardian extends Model<UserAttributes, UserInputType> implements UserAttributes {
+  public id!: number;
+  public firstName!: string;
+  public lastName!: string;
+  public displayName!: string;
+  public email!: string;
+  public password!: string;
+  public resetPasswordToken!: string;
+  public resetPasswordExpires!: number;
+  public resetPasswordTokenUsed!: boolean;
+
+  checkPassword(loginPassword:string): Promise<boolean>{
+    return bcrypt.compare(loginPassword, this.password);
+  }
+
 }
 
 CustomerGuardian.init(
@@ -16,20 +45,16 @@ CustomerGuardian.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    guardianFirstName: {
+    firstName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    guardianLastName: {
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     displayName: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    birthday: {
-      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     email: {
@@ -47,39 +72,6 @@ CustomerGuardian.init(
         len: [8, 22],
       },
     },
-    addressStreet: {
-      type: DataTypes.STRING,
-    },
-    addressCity: {
-      type: DataTypes.STRING,
-    },
-    addressState: {
-      type: DataTypes.STRING,
-    },
-    addressZipCode: {
-      type: DataTypes.STRING,
-    },
-    phoneNumber: {
-      type: DataTypes.STRING,
-    },
-    photoURL: {
-      type: DataTypes.STRING,
-    },
-    storedValue: {
-      type: DataTypes.FLOAT,
-    },
-    notes: {
-      type: DataTypes.TEXT,
-    },
-    isAccountOwner: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    isBanned: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
     resetPasswordToken: {
       type: DataTypes.STRING,
       unique: true,
@@ -92,13 +84,8 @@ CustomerGuardian.init(
     },
   },
   {
-    instanceMethods: {
-      checkPassword(loginPassword:string) {
-        return bcrypt.compare(loginPassword, this.password);
-      }
-    },
     hooks: {
-      beforeCreate: async (newCustomer) => {
+      beforeCreate: async (newCustomer: UserInputType) => {
         try {
           newCustomer.password = await bcrypt.hash(newCustomer.password, 10);
           return newCustomer;
@@ -123,5 +110,6 @@ CustomerGuardian.init(
     modelName: 'customer_guardian',
   }
 );
+
 
 export default CustomerGuardian;
