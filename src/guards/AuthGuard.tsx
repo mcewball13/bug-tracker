@@ -15,10 +15,25 @@ export default function AuthGuard({ children }: Props) {
   const { pathname, push } = useRouter();
 
   useEffect(() => {
-    if (isInitialized && !isAuthenticated) {
-      push('/login');
+    // ? handles if there is a favorite setup and they are not logged in or their token expired
+    if (requestedLocation && pathname !== requestedLocation) {
+      push(requestedLocation);
     }
-  }, [isAuthenticated, isInitialized]);
+    if (isAuthenticated) {
+      setRequestedLocation(null);
+    }
+  }, [pathname, push, isAuthenticated, requestedLocation]);
+  if (!isInitialized) {
+    // TODO add loading component
+    return null;
+  }
+  if (!isAuthenticated) {
+    if (pathname !== requestedLocation) {
+      setRequestedLocation(pathname);
+    }
+    // TODO add login component
+    return null;
+  }
 
   return <>{children}</>;
 }
