@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connection.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 
@@ -10,7 +11,10 @@ class Employee extends Model {
   checkPassword(loginPassword){
     return bcrypt.compare(loginPassword, this.password);
   }
-
+  generateToken(){
+    const payload = { id: this.id};
+    return jwt.sign({data: payload}, process.env.JWT_SECRET, {expiresIn: '1h'});
+  }
 }
 
 Employee.init(
