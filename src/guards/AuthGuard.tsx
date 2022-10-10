@@ -15,7 +15,7 @@ export default function AuthGuard({ children }: Props) {
   const { pathname, push } = useRouter();
 
   useEffect(() => {
-    // ? handles if there is a favorite setup and they are not logged in or their token expired
+    // * handles if there is a favorite setup and they are not logged in or their token expired
     if (requestedLocation && pathname !== requestedLocation) {
       push(requestedLocation);
     }
