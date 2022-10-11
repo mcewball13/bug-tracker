@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Bugs extends Model { }
+class Tickets extends Model { }
 
-Bugs.init(
+Tickets.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -16,19 +16,14 @@ Bugs.init(
         description: {
             type: DataTypes.STRING,
         },
-        projects_id: {
-            type: DataTypes.NUMBER,
-            references: {
-                model: 'projects',
-                key: 'id',
-            },
+        mini_description: {
+            type: DataTypes.STRING,
         },
-        tickets_id: {
-            type: DataTypes.NUMBER,
-            references: {
-                model: 'tickets',
-                key: 'id',
-            },
+        severity: {
+            type: DataTypes.STRING,
+        },
+        tags: {
+            type: DataTypes.STRING,
         },
         employee_id: {
             type: DataTypes.NUMBER,
@@ -37,8 +32,12 @@ Bugs.init(
                 key: 'id',
             },
         },
-        tags: {
-            type: DataTypes.STRING,
+        bugs_id: {
+            type: DataTypes.NUMBER,
+            references: {
+                model: 'bugs',
+                key: 'id',
+            },
         },
     },
     {
@@ -46,8 +45,8 @@ Bugs.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'Bugs',
+        modelName: 'Tickets',
     }
 );
 
-module.exports = Bugs;
+module.exports = Tickets;
