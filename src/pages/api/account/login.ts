@@ -21,7 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             exclude: ['createdAt', 'updatedAt'],
           },
         });
-        console.log(userData);
 
         if (!userData) {
           res.status(400).json({ message: 'Incorrect email or password, please try again' });
