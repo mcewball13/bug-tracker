@@ -1,41 +1,42 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connection.js';
 
-class Company extends Model {}
+class Ticket extends Model {}
 
-Company.init(
+Ticket.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    companyName: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    addressStreet: {
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    priority: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    addressCity: {
+    status: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    addressState: {
-      type: DataTypes.STRING,
+    dateCreated: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    addressZip: {
-      type: DataTypes.STRING,
+    dateUpdated: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    addressPhone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {},
-    },
-    dateInBusiness: {
+    dateClosed: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -45,8 +46,8 @@ Company.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'company',
+    modelName: 'ticket',
   }
 );
 
-export default Company;
+export default Ticket;

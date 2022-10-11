@@ -1,52 +1,55 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connection.js';
 
-class Company extends Model {}
 
-Company.init(
+class Bug extends Model {}
+
+Bug.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    companyName: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    addressStreet: {
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    priority: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },  
+    status: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    addressCity: {
-      type: DataTypes.STRING,
+    dateCreated: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
-    },
-    addressState: {
-      type: DataTypes.STRING,
+      defaultValue: DataTypes.NOW,
+    },  
+    dateUpdated: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
-    },
-    addressZip: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    addressPhone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {},
-    },
-    dateInBusiness: {
+      defaultValue: DataTypes.NOW,
+    },  
+    dateClosed: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    
   },
   {
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'company',
+    modelName: 'bug',
   }
 );
 
-export default Company;
+export default Bug;
