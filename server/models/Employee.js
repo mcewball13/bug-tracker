@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connection.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 
@@ -10,7 +11,10 @@ class Employee extends Model {
   checkPassword(loginPassword){
     return bcrypt.compare(loginPassword, this.password);
   }
-
+  generateToken(){
+    const payload = { id: this.id};
+    return jwt.sign({data: payload}, process.env.JWT_SECRET, {expiresIn: '1h'});
+  }
 }
 
 Employee.init(
@@ -35,7 +39,7 @@ Employee.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: false,
+      unique: true,
       validate: {
         isEmail: true,
       },
@@ -60,10 +64,21 @@ Employee.init(
   },
   {
     hooks: {
-      beforeCreate: async ({password}, options) => {
+      beforeCreate: async (newEmployee) => {
         try {
-          password = await bcrypt.hash(password, 10);
-          return password;
+          console.log('beforeCreate hook');
+          newEmployee.password = await bcrypt.hash(newEmployee.password, 10);
+          return newEmployee;
+        } catch (err) {
+          throw new Error(err);
+        }
+      },
+      beforeBulkCreate: async (employees) => {
+        try {
+          employees.forEach((employee) => {
+            console.log(employee);
+            employee.dataValues.password = bcrypt.hashSync(employee.password, 10);
+          });
         } catch (err) {
           throw new Error(err);
         }
@@ -83,6 +98,7 @@ Employee.init(
     freezeTableName: true,
     underscored: true,
     modelName: 'employee',
+    
   }
 );
 

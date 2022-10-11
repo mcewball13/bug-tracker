@@ -1,7 +1,14 @@
 import { Employee } from '../server/models/index.js';
 import { faker } from '@faker-js/faker';
 
-const _EMPLOYEES = [];
+const _EMPLOYEES = [{
+  firstName: "Mike",
+  lastName: "Smith",
+  displayName: "Mike Smith",
+  email: "mcewball13@gmail.com",
+  password: "password1234",
+  company_id: 1,
+}];
 
 for (let i = 0; i < 8; i++) {
   _EMPLOYEES.push({
