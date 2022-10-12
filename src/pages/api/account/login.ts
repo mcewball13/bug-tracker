@@ -1,15 +1,18 @@
-import { Employee } from '../../../../server/models/index.js';
 import { NextApiRequest, NextApiResponse } from 'next';
+// models
+import { Employee } from '../../../../server/models/index.js';
+// Types
+import { RequestMethods as Methods } from 'src/@types/api.js';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method } = req;
     switch (method) {
-      case 'GET':
+      case Methods.Get:
         const employees = await Employee.findAll({});
         res.status(200).json({ success: true, data: employees });
         break;
-      case 'POST':
+      case Methods.Post:
         const { email, password } = req.body;
 
         const userData = await Employee.findOne({
@@ -18,7 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             exclude: ['createdAt', 'updatedAt'],
           },
         });
-        console.log(userData);
 
         if (!userData) {
           res.status(400).json({ message: 'Incorrect email or password, please try again' });
