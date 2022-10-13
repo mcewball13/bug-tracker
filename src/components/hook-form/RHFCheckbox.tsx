@@ -7,7 +7,7 @@ interface RHFCheckboxProps extends Omit<FormControlLabelProps, 'control'> {
     name: string;
   }
   
-  export function RHFCheckbox({ name, ...other }: RHFCheckboxProps) {
+  export default function RHFCheckbox({ name, ...other }: RHFCheckboxProps) {
     const { control } = useFormContext();
   
     return (

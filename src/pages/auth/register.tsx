@@ -3,12 +3,12 @@ import { capitalCase } from 'change-case';
 import NextLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@mui/material';
-// routes
-import { PATH_AUTH } from '../../routes/paths';
+import { Box, Card, Link, Container, Typography, Tooltip } from '@mui/material';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
+// routes
+import { PATH_AUTH } from '../../routes/paths';
 // guards
 import GuestGuard from '../../guards/GuestGuard';
 // components
@@ -16,7 +16,7 @@ import Page from '../../components/Page';
 // import Logo from '../../components/Logo';
 // import Image from '../../components/Image';
 // sections
-import { LoginForm } from '../../sections/auth/login';
+import { RegisterForm } from '../../sections/auth/register';
 
 // ----------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Login() {
+export default function Register() {
   const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
@@ -72,15 +72,15 @@ export default function Login() {
 
   return (
     <GuestGuard>
-      <Page title="Login">
+      <Page title="Register">
         <RootStyle>
           <HeaderStyle>
             {/* <Logo /> */}
             {smUp && (
               <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                Don’t have an account? {''}
-                <NextLink href={PATH_AUTH.register} passHref>
-                  <Link variant="subtitle2">Get started</Link>
+                Already have an account? {''}
+                <NextLink href={PATH_AUTH.login} passHref>
+                  <Link variant="subtitle2">Login</Link>
                 </NextLink>
               </Typography>
             )}
@@ -89,30 +89,29 @@ export default function Login() {
           {mdUp && (
             <SectionStyle>
               <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                Hi, Welcome Back
+                Manage the job more effectively with Minimal
               </Typography>
               {/* <Image
                 visibleByDefault
                 disabledEffect
-                src="/assets/illustrations/illustration_login.png"
-                alt="login"
+                alt="register"
+                src="/assets/illustrations/illustration_register.png"
               /> */}
             </SectionStyle>
           )}
 
-          <Container maxWidth="sm">
+          <Container>
             <ContentStyle>
-              <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" gutterBottom>
-                    Sign in to Minimal
+                    Get started absolutely free.
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>
-                    Enter your details below.
+                    Free forever. No credit card needed.
                   </Typography>
                 </Box>
-
-                <Tooltip title={capitalCase(method)} placement="right">
+                <Tooltip title={capitalCase(method)}>
                   <>
                     {/* <Image
                       disabledEffect
@@ -122,19 +121,27 @@ export default function Login() {
                     /> */}
                   </>
                 </Tooltip>
-              </Stack>
+              </Box>
 
-              <Alert severity="info" sx={{ mb: 3 }}>
-                Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-              </Alert>
+              <RegisterForm />
 
-              <LoginForm />
+              <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+                By registering, I agree to Minimal&nbsp;
+                <Link underline="always" color="text.primary" href="#">
+                  Terms of Service
+                </Link>
+                {''}and{''}
+                <Link underline="always" color="text.primary" href="#">
+                  Privacy Policy
+                </Link>
+                .
+              </Typography>
 
               {!smUp && (
-                <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                  Don’t have an account?{' '}
-                  <NextLink href={PATH_AUTH.register} passHref>
-                    <Link variant="subtitle2">Get started</Link>
+                <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+                  Already have an account?{' '}
+                  <NextLink href={PATH_AUTH.login} passHref>
+                    <Link variant="subtitle2">Login</Link>
                   </NextLink>
                 </Typography>
               )}
