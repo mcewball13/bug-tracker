@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^1.1.0",
     "bcrypt": "^5.1.0",
+    "change-case": "^4.1.2",
     "dotenv": "^16.0.3",
     "framer-motion": "^7.5.3",
     "js-cookie": "^3.0.1",
