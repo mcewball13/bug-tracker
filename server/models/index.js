@@ -4,6 +4,7 @@ import Bug from './Bug.js';
 import Tag from './Tag.js';
 import Ticket from './Ticket.js';
 import Comment from './Comment.js';
+import Project from './Projects';
 
 // ===========================================================
 // Create associations with the main company
@@ -57,7 +58,7 @@ Bug.belongsTo(Ticket, {
   allowNull: true,
 });
 
-// Through Tables for many to many relationships
+// Through Tables for 'many to many' ticket/tag relationships
 Ticket.belongsToMany(Tag, {
   through: 'ticket_has_tag',
   foreignKey: 'ticket_id',
@@ -79,7 +80,7 @@ Comment.belongsTo(Bug, {
   foreignKey: 'bug_id',
 });
 
-// Through Tables for many to many relationships
+// Through Tables for 'many to many' bug/tag relationships
 
 Bug.belongsToMany(Tag, {
   through: 'bug_has_tag',
@@ -90,6 +91,31 @@ Tag.belongsToMany(Bug, {
   through: 'bug_has_tag',
   foreignKey: 'tag_id',
   as: 'bugs',
+});
+
+// ===========================================================
+// Create associations with the Projects
+// ===========================================================
+
+Project.hasMany(Bug, {
+  foreignKey: 'project_id',
+});
+
+Bug.belongsTo(Project, {
+  foreignKey: 'project_id',
+});
+
+// Through Tables for 'many to many' project/employee relationships
+
+Project.belongsToMany(Employee, {
+  through: 'project_has_employee',
+  foreignKey: 'project_id',
+  as: 'employee',
+});
+Employee.belongsToMany(Project, {
+  through: 'project_has_employee',
+  foreignKey: 'employee_id',
+  as: 'projects',
 });
 
 export { Company, Employee, Bug, Tag, Ticket, Comment };
