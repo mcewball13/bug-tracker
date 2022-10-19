@@ -1,7 +1,11 @@
-import { AppBar, Stack } from '@mui/material';
+import { AppBar, Stack, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import { IconButtonAnimate } from '../../components';
+import Iconify from '../../components/Iconify';
 import { HEADER, NAVBAR } from '../../config';
+import useOffSetTop from '../../hooks/useOffsetTop';
+import useResponsive from '../../hooks/useResponsive';
 import cssStyles from '../../utils/cssStyles';
 
 type RootStyleProps = {
@@ -18,7 +22,7 @@ const RootStyle = styled(AppBar, {
   height: HEADER.MOBILE_HEIGHT,
   zIndex: theme.zIndex.appBar + 1,
   transition: theme.transitions.create(['width', 'height'], {
-    duration: theme.transitions.duration.shorter,
+    duration: theme.transitions.duration.short,
   }),
   [theme.breakpoints.up('lg')]: {
     height: HEADER.DASHBOARD_DESKTOP_HEIGHT,
@@ -44,6 +48,29 @@ type Props = {
 };
 
 export default function DashboardHeader({ onOpenSidebar, isCollapse = false, verticalLayout = false }: Props) {
-    const isOffset = useOffsetTop
-  return <Stack></Stack>;
+  const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
+
+  const isDesktop = useResponsive('up', 'lg');
+
+  {isDesktop && verticalLayout && <div>Logo</div>}
+
+  {!isDesktop && (
+    <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
+      <Iconify icon="eva:menu-2-fill" />
+    </IconButtonAnimate>
+  )}
+
+  return (
+    <RootStyle isCollapse={isCollapse} isOffset={isOffset} verticalLayout={verticalLayout}>
+      <Toolbar sx={{ minHeight: '100%!important', px: { lg: 5 } }}>
+        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+          {/*
+          <NotificationsPopover />
+          <ContactsPopover />
+          <AccountPopover /> 
+          */}
+        </Stack>
+      </Toolbar>
+    </RootStyle>
+  );
 }
