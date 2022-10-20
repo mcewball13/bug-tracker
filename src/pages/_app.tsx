@@ -19,7 +19,10 @@ interface MyAppProps extends AppProps {
 }
 
 function MyApp(props: MyAppProps) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps, settings } = props;
+
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <>
       <Head>
@@ -27,7 +30,7 @@ function MyApp(props: MyAppProps) {
       </Head>
       <AuthProvider>
         <ThemeProvider>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </AuthProvider>
     </>

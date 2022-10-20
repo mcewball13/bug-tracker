@@ -6,6 +6,8 @@ import { HEADER, NAVBAR } from '../../config';
 import useSettings from '../../hooks/useSettings';
 import useResponsive from '../../hooks/useResponsive';
 import DashboardHeader from './header';
+import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import AuthGuard from '../../guards/AuthGuard';
 
 // =============================================================================
 
@@ -41,14 +43,17 @@ type Props = {
 };
 
 export default function DashboardLayout({ children }: Props) {
-  const [collapseClick, setCollapseClick] = useState(false);
+  const { collapseClick, isCollapse } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
 
   const isDesktop = useResponsive('up', 'lg');
 
   return (
-    <Box sx={{ display: { lg: 'flex' }, minHeight: { lg: 1 } }}>
-      <DashboardHeader isCollapse={isCollapse} onOpenSidebar={handleOpenSidebar} />
-    </Box>
+    <AuthGuard>
+      <Box sx={{ display: { lg: 'flex' }, minHeight: { lg: 1 } }}>
+        <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} />
+        <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
+      </Box>
+    </AuthGuard>
   );
 }
