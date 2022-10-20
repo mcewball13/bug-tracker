@@ -1,76 +1,54 @@
-import { AppBar, Stack, Toolbar } from '@mui/material';
+import { useState, ReactNode } from 'react';
+// @mui
 import { styled } from '@mui/material/styles';
-import React from 'react';
-import { IconButtonAnimate } from '../../components';
-import Iconify from '../../components/Iconify';
+import { Box } from '@mui/material';
 import { HEADER, NAVBAR } from '../../config';
-import useOffSetTop from '../../hooks/useOffsetTop';
+import useSettings from '../../hooks/useSettings';
 import useResponsive from '../../hooks/useResponsive';
-import cssStyles from '../../utils/cssStyles';
+import DashboardHeader from './header';
 
-type RootStyleProps = {
-  isCollapse: boolean;
-  isOffset: boolean;
-  verticalLayout: boolean;
+// =============================================================================
+
+type MainStyleProps = {
+  collapseClick: boolean;
 };
 
-const RootStyle = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== 'isCollapse' && prop !== 'isOffset' && prop !== 'verticalLayout',
-})<RootStyleProps>(({ isCollapse, isOffset, verticalLayout, theme }) => ({
-  ...cssStyles(theme).bgBlur(),
-  boxShadow: 'none',
-  height: HEADER.MOBILE_HEIGHT,
-  zIndex: theme.zIndex.appBar + 1,
-  transition: theme.transitions.create(['width', 'height'], {
-    duration: theme.transitions.duration.short,
-  }),
+const MainStyle = styled('main', {
+  shouldForwardProp: (prop) => prop !== 'collapseClick',
+})<MainStyleProps>(({ collapseClick, theme }) => ({
+  flexGrow: 1,
+  paddingTop: HEADER.MOBILE_HEIGHT + 24,
+  paddingBottom: HEADER.MOBILE_HEIGHT + 24,
   [theme.breakpoints.up('lg')]: {
-    height: HEADER.DASHBOARD_DESKTOP_HEIGHT,
-    width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH + 1}px)`,
-    ...(isCollapse && {
-      width: `calc(100% - ${NAVBAR.DASHBOARD_COLLAPSE_WIDTH}px)`,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
+    paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
+    width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
+    transition: theme.transitions.create('margin-left', {
+      duration: theme.transitions.duration.shorter,
     }),
-    ...(isOffset && {
-      height: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
-    }),
-    ...(verticalLayout && {
-      width: '100%',
-      height: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
-      backgroundColor: theme.palette.background.default,
+    ...(collapseClick && {
+      marginLeft: NAVBAR.DASHBOARD_COLLAPSE_WIDTH,
     }),
   },
 }));
 
+// =============================================================================
+
 type Props = {
-  onOpenSidebar: VoidFunction;
-  isCollapse?: boolean;
-  verticalLayout?: boolean;
+  children: ReactNode;
 };
 
-export default function DashboardHeader({ onOpenSidebar, isCollapse = false, verticalLayout = false }: Props) {
-  const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
+export default function DashboardLayout({ children }: Props) {
+  const [collapseClick, setCollapseClick] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const isDesktop = useResponsive('up', 'lg');
 
-  {isDesktop && verticalLayout && <div>Logo</div>}
-
-  {!isDesktop && (
-    <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-      <Iconify icon="eva:menu-2-fill" />
-    </IconButtonAnimate>
-  )}
-
   return (
-    <RootStyle isCollapse={isCollapse} isOffset={isOffset} verticalLayout={verticalLayout}>
-      <Toolbar sx={{ minHeight: '100%!important', px: { lg: 5 } }}>
-        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          {/*
-          <NotificationsPopover />
-          <ContactsPopover />
-          <AccountPopover /> 
-          */}
-        </Stack>
-      </Toolbar>
-    </RootStyle>
+    <Box sx={{ display: { lg: 'flex' }, minHeight: { lg: 1 } }}>
+      <DashboardHeader isCollapse={isCollapse} onOpenSidebar={handleOpenSidebar} />
+    </Box>
   );
 }
