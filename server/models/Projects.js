@@ -21,10 +21,6 @@ Projects.init(
         },
         company_id: {
             type: DataTypes.NUMBER,
-            references: {
-                model: 'company',
-                key: 'id',
-            },
         },
     },
     {
