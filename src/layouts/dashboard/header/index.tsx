@@ -1,4 +1,4 @@
-import { AppBar, Stack, Toolbar } from '@mui/material';
+import { AppBar, Box, Stack, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
 import { IconButtonAnimate } from '../../../components';
@@ -25,6 +25,7 @@ const RootStyle = styled(AppBar, {
     duration: theme.transitions.duration.short,
   }),
   [theme.breakpoints.up('lg')]: {
+    backgroundColor: theme.palette.background.neutral,
     height: HEADER.DASHBOARD_DESKTOP_HEIGHT,
     width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH + 1}px)`,
     ...(isCollapse && {
@@ -36,7 +37,7 @@ const RootStyle = styled(AppBar, {
     ...(verticalLayout && {
       width: '100%',
       height: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: theme.palette.background.neutral,
     }),
   },
 }));
@@ -52,13 +53,17 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
 
   const isDesktop = useResponsive('up', 'lg');
 
-  {isDesktop && verticalLayout && <div>Logo</div>}
+  {
+    isDesktop && verticalLayout && <div>Logo</div>;
+  }
 
-  {!isDesktop && (
-    <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-      <Iconify icon="eva:menu-2-fill" />
-    </IconButtonAnimate>
-  )}
+  {
+    !isDesktop && (
+      <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
+        <Iconify icon="eva:menu-2-fill" />
+      </IconButtonAnimate>
+    );
+  }
 
   return (
     <RootStyle isCollapse={isCollapse} isOffset={isOffset} verticalLayout={verticalLayout}>
@@ -69,6 +74,11 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
           <ContactsPopover />
           <AccountPopover /> 
           */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Typography>Yes</Typography>
+          <Typography>Yes</Typography>
+          <Typography>Yes</Typography>
         </Stack>
       </Toolbar>
     </RootStyle>
