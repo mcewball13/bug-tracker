@@ -19,13 +19,6 @@ Projects.init(
         github_url: {
             type: DataTypes.STRING,
         },
-        company_id: {
-            type: DataTypes.NUMBER,
-            references: {
-                model: 'company',
-                key: 'id',
-            },
-        },
     },
     {
         sequelize,
