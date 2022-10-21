@@ -5,6 +5,7 @@ import Tag from './Tag.js';
 import Ticket from './Ticket.js';
 import Comment from './Comment.js';
 import Project from './Projects';
+import Department from './Department'
 
 // ===========================================================
 // Create associations with the main company
@@ -14,6 +15,13 @@ Company.hasMany(Employee, {
   foreignKey: 'company_id',
 });
 Employee.belongsTo(Company, {
+  foreignKey: 'company_id',
+});
+
+Company.hasMany(Department, {
+  foreignKey: 'company_id',
+});
+Department.belongsTo(Company, {
   foreignKey: 'company_id',
 });
 
@@ -110,12 +118,25 @@ Bug.belongsTo(Project, {
 Project.belongsToMany(Employee, {
   through: 'project_has_employee',
   foreignKey: 'project_id',
-  as: 'employee',
+  as: 'projects',
 });
 Employee.belongsToMany(Project, {
   through: 'project_has_employee',
   foreignKey: 'employee_id',
-  as: 'projects',
+  as: 'employees',
 });
 
-export { Company, Employee, Bug, Tag, Ticket, Comment };
+// ===========================================================
+// Create associations with the Department
+// ===========================================================
+
+Department.hasMany(Employee, {
+  foreignKey: 'department_id',
+});
+Employee.belongsTo(Department, {
+  foreignKey: 'department_id',
+});
+
+
+
+export { Company, Employee, Bug, Tag, Ticket, Comment, Department, Project };

@@ -13,9 +13,6 @@ Department.init(
     name: {
       type: DataTypes.STRING,
     },
-    company_id: {
-      type: DataTypes.NUMBER,
-    },
   },
   {
     sequelize,
