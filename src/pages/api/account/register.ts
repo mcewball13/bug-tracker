@@ -1,11 +1,14 @@
-import { Employee } from '../../../../server/models/index.js';
 import { NextApiRequest, NextApiResponse } from 'next';
+// models
+import { Employee } from '../../../../server/models/index.js';
+// Types
+import { RequestMethods as Methods } from 'src/@types/api.js';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method } = req;
     switch (method) {
-      case 'POST':
+      case Methods.Post:
         const userData = await Employee.create(req.body);
 
         const user = userData.get({ plain: true });

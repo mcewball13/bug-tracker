@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function ThemeProvider({ children }: Props) {
-  const { themeMode, themeDirection } = useSettings();
+  const { themeMode } = useSettings();
 
   const isLight = themeMode === 'light';
 
@@ -28,11 +28,10 @@ export default function ThemeProvider({ children }: Props) {
       typography,
       breakpoints,
       shape: { borderRadius: 8 },
-      direction: themeDirection,
       shadows: isLight ? shadows.light : shadows.dark,
       customShadows: isLight ? customShadows.light : customShadows.dark,
     }),
-    [isLight, themeDirection]
+    [isLight]
   );
 
   const theme = createTheme(themeOptions);

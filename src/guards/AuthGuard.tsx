@@ -3,6 +3,7 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 // hooks
 import useAuth from '../hooks/useAuth.js';
+import Login from '../pages/auth/login.jsx';
 
 type Props = {
   children: ReactNode;
@@ -32,7 +33,7 @@ export default function AuthGuard({ children }: Props) {
       setRequestedLocation(pathname);
     }
     // TODO add login component
-    return null;
+    return <Login />;
   }
 
   return <>{children}</>;
