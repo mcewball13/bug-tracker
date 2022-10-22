@@ -2,8 +2,8 @@ import { useState, useEffect, ReactNode } from 'react';
 // next
 import { useRouter } from 'next/router';
 // hooks
-import useAuth from '../hooks/useAuth.js';
-import Login from '../pages/auth/login.jsx';
+import useAuth from '../hooks/useAuth';
+import Login from '../pages/auth/login';
 
 type Props = {
   children: ReactNode;
