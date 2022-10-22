@@ -22,7 +22,7 @@ function handler(req, res) {
     async function getBugById(id) {
         try {
             const bug = await Bug.findByPk(id)
-            res.status(200).json({ dbBugs });
+            res.status(200).json({ bug });
 
         } catch (error) {
             return res.status(400).json({ 'message': 'Could not connect to database' });
@@ -34,7 +34,7 @@ function handler(req, res) {
 
 
         //if the params title already exists for another bug will throw an error
-        if (req.params.title !== Bug.title && bugs.findByPk(req.body.title))
+        if (req.params.title !== Bug.title || Bug.findByPk(req.body.title))
             {throw `Bug report with the title ${req.params.title} already exists`;}
 
         // if the params priority is the same as bug's current priority will not update
@@ -44,19 +44,19 @@ function handler(req, res) {
 
         Bug.dateUpdated = new Date().toISOString();
 
-        if (priority === 'closed') {
-            Bug.dateClosed = new Date().toISOString();
-        };
         try {
             const updatedBug = await Bug.update(
                 { status: req.body.status },
                 {
                     where: { _id: req.param.id }
                 });
-
-            res.status(200).json({ updatedBug });
-        } catch (error) {
-            return res.status(400).json({ message: error });
+                if (priority === 'closed') {
+                    Bug.dateClosed = new Date().toISOString();
+                };
+                
+                res.status(200).json({ updatedBug });
+            } catch (error) {
+                return res.status(400).json({ message: error });
         }
     };
 
