@@ -49,11 +49,9 @@ export default function DashboardLayout({ children }: Props) {
   const isDesktop = useResponsive('up', 'lg');
 
   return (
-    <AuthGuard>
       <Box sx={{ display: { lg: 'flex' }, minHeight: { lg: 1 } }}>
         <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} />
         <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
       </Box>
-    </AuthGuard>
   );
 }

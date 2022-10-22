@@ -1,13 +1,13 @@
 import { ReactElement } from "react";
-import DashboardLayout from "../../layouts/dashboard";
+import Layout from "../../layouts";
 
 
 
 GeneralDashboard.getLayout = function getLayout(page: ReactElement) {
   return (
-    <DashboardLayout>
+    <Layout>
       {page}
-    </DashboardLayout>
+    </Layout>
   )
 }
 
