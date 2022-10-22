@@ -4,6 +4,8 @@ import Bug from './Bug.js';
 import Tag from './Tag.js';
 import Ticket from './Ticket.js';
 import Comment from './Comment.js';
+import Project from './Projects';
+import Department from './Department'
 
 // ===========================================================
 // Create associations with the main company
@@ -13,6 +15,13 @@ Company.hasMany(Employee, {
   foreignKey: 'company_id',
 });
 Employee.belongsTo(Company, {
+  foreignKey: 'company_id',
+});
+
+Company.hasMany(Department, {
+  foreignKey: 'company_id',
+});
+Department.belongsTo(Company, {
   foreignKey: 'company_id',
 });
 
@@ -57,7 +66,7 @@ Bug.belongsTo(Ticket, {
   allowNull: true,
 });
 
-// Through Tables for many to many relationships
+// Through Tables for 'many to many' ticket/tag relationships
 Ticket.belongsToMany(Tag, {
   through: 'ticket_has_tag',
   foreignKey: 'ticket_id',
@@ -79,7 +88,7 @@ Comment.belongsTo(Bug, {
   foreignKey: 'bug_id',
 });
 
-// Through Tables for many to many relationships
+// Through Tables for 'many to many' bug/tag relationships
 
 Bug.belongsToMany(Tag, {
   through: 'bug_has_tag',
@@ -92,4 +101,42 @@ Tag.belongsToMany(Bug, {
   as: 'bugs',
 });
 
-export { Company, Employee, Bug, Tag, Ticket, Comment };
+// ===========================================================
+// Create associations with the Projects
+// ===========================================================
+
+Project.hasMany(Bug, {
+  foreignKey: 'project_id',
+});
+
+Bug.belongsTo(Project, {
+  foreignKey: 'project_id',
+});
+
+// Through Tables for 'many to many' project/employee relationships
+
+Project.belongsToMany(Employee, {
+  through: 'project_has_employee',
+  foreignKey: 'project_id',
+  as: 'projects',
+});
+Employee.belongsToMany(Project, {
+  through: 'project_has_employee',
+  foreignKey: 'employee_id',
+  as: 'employees',
+});
+
+// ===========================================================
+// Create associations with the Department
+// ===========================================================
+
+Department.hasMany(Employee, {
+  foreignKey: 'department_id',
+});
+Employee.belongsTo(Department, {
+  foreignKey: 'department_id',
+});
+
+
+
+export { Company, Employee, Bug, Tag, Ticket, Comment, Department, Project };
