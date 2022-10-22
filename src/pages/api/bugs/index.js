@@ -1,6 +1,6 @@
 import sequelize from '../../../../server/config/connection';
 import { Bug } from '../../../../server/models';
-import handler from '../hello';
+
 
 export default handler;
 
