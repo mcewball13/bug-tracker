@@ -12,7 +12,7 @@ class Employee extends Model {
     return bcrypt.compare(loginPassword, this.password);
   }
   generateToken(){
-    const payload = { id: this.id};
+    const payload = { userId: this.id};
     return jwt.sign({data: payload}, process.env.JWT_SECRET, {expiresIn: '1h'});
   }
 }
