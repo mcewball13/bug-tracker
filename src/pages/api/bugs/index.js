@@ -17,7 +17,7 @@ function handler(req, res) {
 
     function getBugs() {
         try {
-            const bugs = Bug.getAll();
+            const bugs = Bug.findAll();
             return res.status(200).json(bugs);
         } catch (error) {
             return res.status(400).json({ message: error });
