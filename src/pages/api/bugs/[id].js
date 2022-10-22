@@ -7,15 +7,15 @@ function handler(req, res) {
     switch (req.method) {
         case 'GET':
             return getBugById(req.params.id);
-            ;
+            
         case 'PUT':
             return updateBug(req.params.id, req.body.status, req.body.priority);
-            ;
+            
         case 'DELETE':
             return deleteBug(req.params.id);
-            ;
+            
         default:
-            return res.status(405).end(`Method ${req.method} Not Allowed`)
+            return res.status(405).end(`Method ${req.method} Not Allowed`);
 
     };
 
