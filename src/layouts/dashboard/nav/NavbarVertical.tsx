@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Scrollbar from '../../../components/Scrollbar';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
 import useResponsive from '../../../hooks/useResponsive';
+import CollapseButton from './CollapseButton';
 
 import navConfig from './NavConfig';
 
@@ -48,6 +49,9 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }: Props)
       <Typography variant="h4" sx={{ ml: 2, mt: 2, mb: 2 }}>
         Logo
       </Typography>
+      {isDesktop && !isCollapse && <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />}
     </Stack>
+
+    
   </Scrollbar>;
 }
