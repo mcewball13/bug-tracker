@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 
-import { IconButtonAnimate } from '../../../components';
+import { IconButtonAnimate } from '..';
 
 type CollapseButtonProps = {
   onToggleCollapse: VoidFunction;

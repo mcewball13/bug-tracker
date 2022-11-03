@@ -1,6 +1,6 @@
-import SvgIconStyle from '../../../components/SvgIconStyle';
-import Iconify from '../../../components/Iconify';
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import SvgIconStyle from '../SvgIconStyle';
+import Iconify from '../Iconify';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 const getIcon = (name: string) => (
   <SvgIconStyle src={`/static/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />

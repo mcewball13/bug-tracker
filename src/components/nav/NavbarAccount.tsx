@@ -3,11 +3,11 @@ import NextLink from 'next/link';
 import { styled } from '@mui/material/styles';
 import { Box, Link, Typography } from '@mui/material';
 // hooks
-import useAuth from '../../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../routes/paths';
 // components
-import MyAvatar from '../../../components/MyAvatar';
+import MyAvatar from '../MyAvatar';
 
 // ----------------------------------------------------------------------
 

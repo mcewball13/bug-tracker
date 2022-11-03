@@ -2,11 +2,11 @@ import { Drawer, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import Scrollbar from '../../../components/Scrollbar';
-import { NAVBAR } from '../../../config';
-import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
-import useResponsive from '../../../hooks/useResponsive';
-import cssStyles from '../../../utils/cssStyles';
+import Scrollbar from '../Scrollbar';
+import { NAVBAR } from '../../config';
+import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import useResponsive from '../../hooks/useResponsive';
+import cssStyles from '../../utils/cssStyles';
 import CollapseButton from './CollapseButton';
 import NavbarAccount from './NavbarAccount';
 
