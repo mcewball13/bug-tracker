@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     const { id } = req.query;
     console.log(id);
-    const { method } = req;
+    const { method } = req
     switch (method) {
       case Methods.Get:
         const employee = await Employee.findOne({
