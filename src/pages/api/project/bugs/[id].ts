@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router.js';
 import { NextApiRequest, NextApiResponse } from 'next';
 //models
-import { Bug } from '../../../../server/models/index.js'
+import { Bug } from '../../../../../server/models/index.js'
 
 //Types
 import { RequestMethods as Methods } from 'src/@types/api.js';

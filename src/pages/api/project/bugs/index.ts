@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { NextApiRequest, NextApiResponse } from 'next';
 // models
-import { Bug } from '../../../../server/models/index.js';
+import { Bug } from '../../../../../server/models/index.js';
 // Types
-import { RequestMethods as Methods } from '../../../@types/api';
+import { RequestMethods as Methods } from '../../../../@types/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -46,8 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     console.log(error);
   }
-  //   TODO add PUT and DELETE methods
-}
+};
 
 
 
