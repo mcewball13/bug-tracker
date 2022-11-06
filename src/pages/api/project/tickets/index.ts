@@ -9,7 +9,7 @@ import { RequestMethods as Methods } from '../../../../@types/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { id, title, description, priority, status } = req.query;
+        const { title, description, priority, status } = req.query;
         const { method } = req;
 
         switch (method) {
@@ -27,10 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             case Methods.Post:
                 const newTicket = await Ticket.create(
                     {
-                        title: req.body.title,
-                        description: req.body.description,
-                        priority: req.body.priority,
-                        status: req.body.status,
+                        title: title,
+                        description: description,
+                        priority: priority,
+                        status: status,
                         dateCreated: new Date().toISOString,
 
                     }
