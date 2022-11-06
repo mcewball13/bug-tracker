@@ -1,65 +1,73 @@
-import sequelize from "../../../../../server/config/connection";
-import { Bug, Employee } from "../../../../../server/models";
-import handler from "../../hello";
+import { useRouter } from 'next/router';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default handler;
+//models
+import { Employee, Bug, Ticket, Tag } from '../../../../../server/models/index';
 
-function handler(req, res) {
-    switch (req.method) {
-        case 'GET':
-            return getEmployeeById(req.body.id);
-        case 'PUT':
-            return updateEmployee(req.body);
-        case 'DELETE':
-            return deleteEmployee(req.body);
-        default:
-            return res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
+//types
 
-    async function getEmployeeById(id) {
-        try {
-            const employee = await Employee.findByPk(req.body.id)
-            res.status(200).json({ employee });
+import { RequestMethods as Methods } from '../../../../@types/api';
 
-        }
-        catch (error) {
-            return res.status(400).json({ message: error })
-        }
-    };
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    try {
 
-    async function updateEmployee(params) {
-        try {
-            const updatedBug = await Bug.update(
-                {
-                    email: params.email,
-                    password: params.password,
-                    firstName: params.firstName,
-                    lastName: params.lastName,
-                    displayName: params.displayName,
+        const {
+            id,
+            email,
+            password,
+            firstName,
+            lastName,
+            displayName
+        } = req.query;
+        const { method } = req
+
+        switch (method) {
+            case Methods.Get:
+                const employee = await Employee.findOne({
+                    where: { id: id },
+                    include: [Bug, Tag],
+                });
+                res.status(200).json({ success: true, data: employee });
+                break;
+
+            //================================================================
+
+            case Methods.Put:
+                const updateEmployee = await Employee.update({
+                    email: email,
+                    password: password,
+                    firstName: firstName,
+                    lastName: lastName,
+                    displayName: displayName,
                 },
-                {
-                    where: { _id: params.id }
-                }
-            )
-            return res.status(200).json({updatedBug})
-        }
-        catch (error) {
-            return res.status(400).json({ message: error });
-        }
-    };
+                { where: { id: id}},
+                );
+                res.status(200).json({ employee: updateEmployee});
+                break;
 
-    async function deleteEmployee(params) {
-        try {
-            const deletedEmployee = await Employee.destroy({
-                where: {
-                    _id: params.id
-                }
-            })
-            res.status(200).json({deletedEmployee})
+                //===================================================
 
+            case Methods.Delete:
+                const deleteEmployee = await Employee.destroy({
+                    where: { id: id }
+                });
+            //=========do we want cascading delete for bugs and tickets assoc with employee?
+
+                res.status(200).json({ success: true, data: deleteEmployee});
+                break;
+
+            //================================================
+            default:
+                res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
+                res.status(500).json(`Method ${method} Not Allowed`);
         }
-        catch (error) {
-            return res.status(400).json({ message: error });
-        }
-    };
-}
+    } catch (error){
+        res.status(500).json({
+            message: error.errors,
+            type: error.errors,
+        });
+
+        console.log(error);
+    }
+};
+
