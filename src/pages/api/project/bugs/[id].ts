@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             case Methods.Get:
                 const bug = await Bug.findOne({
                     where: { id: id },
-                    include: [Ticket, Projectg]
+                    include: [Ticket, Project]
                 });
                 res.status(200).json({ success: true, data: bug });
                 break;
