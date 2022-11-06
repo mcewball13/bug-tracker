@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { NextApiRequest, NextApiResponse } from 'next';
 // models
-import { Bug, Ticket } from '../../../../../server/models/index.js';
+import { Bug, Ticket, Project, Employee } from '../../../../server/models/index.js';
 // Types
-import { RequestMethods as Methods } from '../../../../@types/api';
+import { RequestMethods as Methods } from '../../../@types/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -13,29 +13,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { method } = req
     switch (method) {
       case Methods.Get:
-        const bugs = await Bug.findAll({
+        const projects = await Project.findAll({
           attributes: {
             exclude: ["id"],
           },
-          include: [ Ticket ],
+          include: [ Ticket, Bug, Employee ],
         });
-        res.status(200).json({ success: true, data: bugs });
+        res.status(200).json({ success: true, data: projects });
         break;
 
       // =================================================================================================
 
       case Methods.Post:
-        const newBug = await Bug.create({
-            title: req.body.title,
+        const newProject = await Project.create({
+            name: req.body.name,
             description: req.body.description,
-            priority: req.body.priority,
-            status: req.body.status,
-            dateCreated: new Date().toISOString(),
-            employee: req.body.employee_id
+            github_url: req.body.github_url,
         })
 
-        res.status(200).json({ newBug });
+        res.status(200).json({ newProject });
         break;
+
+    //=============================================
       default:
         res.setHeader('Allow', ['GET', 'POST']);
         res.status(405).end(`Method ${method} Not Allowed`);
@@ -48,6 +47,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(error);
   }
 };
-
-
-

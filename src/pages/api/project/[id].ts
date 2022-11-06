@@ -1,25 +1,25 @@
 import { useRouter } from 'next/router.js';
 import { NextApiRequest, NextApiResponse } from 'next';
 //models
-import { Bug, Project, Ticket } from '../../../../../server/models/index.js'
+import { Bug, Project, Tag, Ticket } from '../../../../server/models/index.js'
 
 //Types
-import { RequestMethods as Methods } from '../../../../@types/api';
+import { RequestMethods as Methods } from '../../../@types/api';
 
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
 
-        const { id, priority, title, status } = req.query
+        const { id } = req.query
         const { method } = req;
         switch (method) {
             case Methods.Get:
-                const bug = await Bug.findOne({
+                const project = await Project.findOne({
                     where: { id: id },
-                    include: [Ticket, Project]
+                    include: [Ticket, Tag, Bug]
                 });
-                res.status(200).json({ success: true, data: bug });
+                res.status(200).json({ success: true, data: project });
                 break;
 
 
@@ -27,13 +27,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
             case Methods.Put:
-                    const updatedBug = await Bug.update(
-                        { status: status, title: title, priority: priority },
+                    const updatedProject = await Project.update(
+                        {  name: req.body.name,
+                            description: req.body.description,
+                            github_url: req.body.github_url, },
                         {
                             where: { id: id },
                         }
                     );
-                    res.status(200).json({ data: updatedBug });
+                    res.status(200).json({ data: updatedProject });
                     break;
             //==============================================================
 
