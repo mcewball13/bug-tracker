@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router.js';
 import { NextApiRequest, NextApiResponse } from 'next';
 //models
-import { Bug } from '../../../../../server/models/index.js'
+import { Bug, Project, Ticket } from '../../../../../server/models/index.js'
 
 //Types
 import { RequestMethods as Methods } from 'src/@types/api.js';
@@ -17,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             case Methods.Get:
                 const bug = await Bug.findOne({
                     where: { id: id },
+                    include: [Ticket, Projectg]
                 });
                 res.status(200).json({ success: true, data: bug });
                 break;

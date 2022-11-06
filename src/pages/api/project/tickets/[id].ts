@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { NextApiRequest, NextApiResponse } from "next";
 //models
-import { Employee, Ticket } from "../../../../../server/models";
+import { Bug, Employee, Ticket } from "../../../../../server/models";
 //Types
 import { RequestMethods as Methods } from '../../../../@types/api';
 
@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             case Methods.Get:
                 const ticket = await Ticket.findOne({
                     where: { id: id },
+                    include: [Bug, Employee]
                 });
                 res.status(200).json({ success: true, data: ticket })
                 break;
@@ -24,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             case Methods.Put:
                 const updatedTicket = await Ticket.update(
                     { status: status, priority: priority },
-                    { where: { id: id } }
+                    { where: { id: id } },
                 );
                 res.status(200).json({ ticket: updatedTicket })
                 break;

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { NextApiRequest, NextApiResponse } from 'next';
 // models
-import { Company } from '../../../../../server/models/index.js';
+import { Company, Employee, Project } from '../../../../../server/models/index.js';
 // Types
 import { RequestMethods as Methods } from '../../../../@types/api';
 
@@ -23,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case Methods.Get:
         const company = await Company.findOne({
           where: { id: id },
+          include: [Employee, Project]
         });
         res.status(200).json({ success: true, data: company });
         break;
