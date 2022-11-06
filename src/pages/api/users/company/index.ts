@@ -1,45 +1,59 @@
-import sequelize from "../../../../../server/config/connection";
-import { Company } from "../../../../../server/models";
+import { useRouter } from 'next/router';
+import { NextApiRequest, NextApiResponse } from 'next';
+// models
+import { Company } from '../../../../../server/models/index.js';
+// Types
+import { RequestMethods as Methods } from '../../../../@types/api';
 
-export default handler;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
-function handler(req, res){
-    switch(req.method){
-        case "GET":
-            return getAllCompanies();
-        case "POST":
-            return createCompany(req.body);
-        default:
-             res.status(405).end(`Method ${req.method} not allowed`)
-    };
+ try{
+    const {
+        id,
+        companyName,
+        addressStreet,
+        addressCity,
+        addressState,
+        addressZip,
+        addressPhone,
+    } = req.query;
+    
+    const { method } = req
+    switch (method) {
+      case Methods.Get:
+        const company = await Company.findOne({
+          where: { id: id },
+        });
+        res.status(200).json({ success: true, data: company });
+        break;
 
-    function getAllCompanies(){
-        try {
-            const companies = Company.findAll();
-            return res.status(200).json(companies);
-        }
-        catch (error){
-            return res.status(400).json({message:error})
-        }
-    };
+      // =================================================================================================
 
-    function createCompany(params){
-        try {
-            const newCompany = Company.create({
-                companyName: params.companyName,
-                addressStreet: params.addressStreet,
-                addressCity: params.addressCity,
-                addressState: params.addressState,
-                addressZip: params.addressZip,
-                addressPhone: params.addressPhone,
-            })
-            return res.status(200).json(newCompany);
-        }
-        catch (error){
-            return res.status(400).json({message:error});
-        }
+      case Methods.Post:
+        const newCompany = await Company.create({
+            companyName: companyName,
+            addressStreet: addressStreet,
+            addressCity: addressCity,
+            addressState: addressState,
+            addressZip: addressZip,
+            addressPhone: addressPhone,
+        });
+        res.status(200).json({ company: newCompany });
+        break;
+
+
+      default:
+        res.setHeader('Allow', ['GET', 'POST']);
+        res.status(405).end(`Method ${method} Not Allowed`);
     }
-}
+  } catch (error) {
+    res.status(500).json({
+      message: error.errors,
+      type: error.errors,
+    });
+    console.log(error);
+  }
+ }
 
 
 
