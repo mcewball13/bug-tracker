@@ -9,10 +9,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(req.body)
     const { method } = req;
     switch (method) {
+
+      // ==========================================
+      // GET
+      // ==========================================
+
       case Methods.Get:
         const employees = await Employee.findAll({});
         res.status(200).json({ success: true, data: employees });
         break;
+
+      // ==========================================
+      // POST
+      // ==========================================
+      
       case Methods.Post:
         const { email, password } = req.body;
 
