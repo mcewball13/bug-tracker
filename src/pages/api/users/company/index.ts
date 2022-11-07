@@ -1,36 +1,48 @@
 import { useRouter } from 'next/router';
 import { NextApiRequest, NextApiResponse } from 'next';
 // models
-import { Employee } from '../../../../../server/models/index.js';
+import { Company, Employee, Project } from '../../../../../server/models/index.js';
 // Types
 import { RequestMethods as Methods } from '../../../../@types/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
+
+ try{
+    const {
+        id,
+        companyName,
+        addressStreet,
+        addressCity,
+        addressState,
+        addressZip,
+        addressPhone,
+    } = req.query;
     
-    const { id } = req.query;
-    console.log(id);
     const { method } = req
     switch (method) {
       case Methods.Get:
-        const employee = await Employee.findOne({
+        const company = await Company.findOne({
           where: { id: id },
+          include: [Employee, Project]
         });
-        res.status(200).json({ success: true, data: employee });
+        res.status(200).json({ success: true, data: company });
         break;
 
       // =================================================================================================
 
       case Methods.Post:
-        const userData = await Employee.findOne({
-          where: { id: id },
-          attributes: {
-            exclude: ['createdAt', 'updatedAt'],
-          },
+        const newCompany = await Company.create({
+            companyName: companyName,
+            addressStreet: addressStreet,
+            addressCity: addressCity,
+            addressState: addressState,
+            addressZip: addressZip,
+            addressPhone: addressPhone,
         });
-
-        res.status(200).json({ user: userData });
+        res.status(200).json({ company: newCompany });
         break;
+
+
       default:
         res.setHeader('Allow', ['GET', 'POST']);
         res.status(405).end(`Method ${method} Not Allowed`);
@@ -42,5 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     console.log(error);
   }
-  //   TODO add PUT and DELETE methods
-}
+ }
+
+
+
