@@ -1,20 +1,19 @@
 import { useRouter } from 'next/router';
 import { NextApiRequest, NextApiResponse } from 'next';
 // models
-import { Employee } from '../../../../../server/models/index.js';
+import { Employee, Bug, Ticket } from '../../../../../server/models/index.js';
 // Types
 import { RequestMethods as Methods } from '../../../../@types/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     
-    const { id } = req.query;
-    console.log(id);
+    const { email, password, firstName, lastName, displayName } = req.query;
     const { method } = req
     switch (method) {
       case Methods.Get:
-        const employee = await Employee.findOne({
-          where: { id: id },
+        const employee = await Employee.findAll({
+          include: [Bug, Ticket]
         });
         res.status(200).json({ success: true, data: employee });
         break;
@@ -22,14 +21,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // =================================================================================================
 
       case Methods.Post:
-        const userData = await Employee.findOne({
-          where: { id: id },
-          attributes: {
-            exclude: ['createdAt', 'updatedAt'],
-          },
+        const userData = await Employee.create({
+            email: email,
+            password: password,
+            firstName: firstName,
+            lastName: lastName,
+            displayName: displayName,
         });
 
-        res.status(200).json({ user: userData });
+        res.status(200).json({ employee: userData });
         break;
       default:
         res.setHeader('Allow', ['GET', 'POST']);
@@ -41,6 +41,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       type: error.errors,
     });
     console.log(error);
-  }
-  //   TODO add PUT and DELETE methods
-}
+  }};

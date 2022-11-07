@@ -4,6 +4,8 @@ import sequelize from '../config/connection.js';
 
 class Bug extends Model {}
 
+Bug.title = undefined;
+
 Bug.init(
   {
     id: {
