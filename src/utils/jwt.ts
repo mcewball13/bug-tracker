@@ -20,9 +20,10 @@ const decodeJWTUser = (accessToken: string) => {
         return null;
     }
 
-    const decoded = jwtDecode<{ user: number }>(accessToken);
+    const decoded = jwtDecode<Record<string, any>>(accessToken);
+    console.log(decoded);
 
-    return decoded.user;
+    return decoded.data;
 }
 
 const handleTokenExpired = (exp: number) => {

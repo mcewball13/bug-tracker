@@ -4,8 +4,8 @@ import Bug from './Bug.js';
 import Tag from './Tag.js';
 import Ticket from './Ticket.js';
 import Comment from './Comment.js';
-import Project from './Projects';
-import Department from './Department'
+import Project from './Projects.js';
+import Department from './Department.js'
 
 // ===========================================================
 // Create associations with the main company
