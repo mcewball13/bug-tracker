@@ -113,6 +113,15 @@ Bug.belongsTo(Project, {
   foreignKey: 'project_id',
 });
 
+Project.hasMany(Ticket, {
+  foreignKey: 'project_id',
+});
+
+Ticket.belongsTo(Project, {
+  foreignKey: 'project_id',
+});
+
+
 // Through Tables for 'many to many' project/employee relationships
 
 Project.belongsToMany(Employee, {
