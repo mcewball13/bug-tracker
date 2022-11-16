@@ -78,6 +78,17 @@ Tag.belongsToMany(Ticket, {
   as: 'tickets',
 });
 
+Ticket.belongsToMany(Employee, {
+  through: 'employee_has_ticket',
+  foreignKey: 'ticket_id',
+  as: 'employees',
+});
+Employee.belongsToMany(Ticket, {
+  through: 'employee_has_ticket',
+  foreignKey: 'employee_id',
+  as: 'assigned_ticket',
+});
+
 // ===========================================================
 // Create associations with the Bugs
 // ===========================================================
